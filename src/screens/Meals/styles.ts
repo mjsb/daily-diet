@@ -1,14 +1,26 @@
-import styled from "styled-components/native";
+import styled, { css } from "styled-components/native";
 
 export const Container = styled.View`
     flex: 1;
-    background-color: ${({ theme }) => theme.COLORS.GRAY_400};
+    background-color: ${({ theme }) => theme.COLORS.WHITE};
     padding: 24px;
 `;
 
 export const Title = styled.Text`
-    color: ${({ theme }) => theme.COLORS.GREEN_DARK};
-    font-size: ${({ theme }) => theme.FONT_SIZE.XXXL}px;
-    font-family: ${({ theme }) => theme.FONT_FAMILY.BOLD};
-    text-transform: uppercase;
+    ${({ theme }) => css`
+        color: ${theme.COLORS.GRAY_100};
+        font-size: ${theme.FONT_SIZE.MD}px;
+        font-family: ${theme.FONT_FAMILY.REGULAR};    
+    `};
+    margin-bottom: 10px;
+`;
+
+export const DateList = styled.Text`
+    ${({ theme }) => css`
+        color: ${theme.COLORS.GRAY_100};
+        font-size: ${theme.FONT_SIZE.XL}px;
+        font-family: ${theme.FONT_FAMILY.BOLD};
+    `}
+    margin-top: 32px;
+    margin-bottom: 8px;
 `;
