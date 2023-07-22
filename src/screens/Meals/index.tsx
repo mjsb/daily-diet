@@ -15,7 +15,7 @@ export function Meals() {
 		<Container>
 			<Header />
 			<PercentCard
-				type="PRIMARY"
+				type="IN"
 				title="90,86%"
 			/>
 			<Title>Refeições</Title> 
@@ -39,7 +39,7 @@ export function Meals() {
 								<MealCard 
 									hora={item}
 									meal={item}
-									type={item === 'NO' ? 'SECONDARY' : 'PRIMARY'}
+									type={item === 'NO' ? 'OUT' : 'IN'}
 								/>
 
 							)}

@@ -1,7 +1,7 @@
 import styled, { css } from "styled-components/native";
 import { MaterialIcons } from "@expo/vector-icons";
 
-export type HeaderStyleProps  = 'PRIMARY' | 'SECONDARY';
+export type HeaderStyleProps  = 'IN' | 'OUT';
 
 type Props = {
     type: HeaderStyleProps;
@@ -45,5 +45,5 @@ export const SubTitle = styled.Text`
 export const BackIcon = styled(MaterialIcons).attrs <Props>(({ theme, type }) => ({
     name: 'arrow-back',
     size: 25,
-    color: type === 'PRIMARY' ? theme.COLORS.GREEN_DARK : theme.COLORS.RED_DARK
+    color: type === 'IN' ? theme.COLORS.GREEN_DARK : theme.COLORS.RED_DARK
 }))``;

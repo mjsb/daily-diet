@@ -7,7 +7,7 @@ type Props = TouchableOpacityProps & {
     type?: BulletTypeStyleProps;
 }
 
-export function MealCard({ hora, meal, type = 'PRIMARY'}: Props) {
+export function MealCard({ hora, meal, type = 'IN'}: Props) {
     return (
         <Container>
             <Hora>{hora}</Hora>           

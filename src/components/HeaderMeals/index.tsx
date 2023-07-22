@@ -1,13 +1,20 @@
-import { Container, Title, BackIcon, Content, BackButton } from "./styles";
+import { Container, Title, BackIcon, Content, BackButton, HeaderMealsStyleProps } from "./styles";
 
-export function HeaderMeals() {
+type Props = {
+    type: HeaderMealsStyleProps;
+    title: string;
+}
+
+export function HeaderMeals({type, title}: Props) {
     return (
-        <Container>
+        <Container
+            type={type}
+        >
             <BackButton>
                 <BackIcon />
             </BackButton>
             <Content>
-                <Title>Nova refeição</Title>
+                <Title>{title}</Title>
             </Content>
         </Container>
     )

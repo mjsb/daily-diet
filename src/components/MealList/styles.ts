@@ -2,7 +2,7 @@ import styled, { css } from "styled-components/native";
 import { TouchableOpacity } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 
-export type BulletTypeStyleProps = 'PRIMARY' | 'SECONDARY';
+export type BulletTypeStyleProps = 'IN' | 'OUT';
 
 type Props = {
     type: BulletTypeStyleProps;
@@ -57,5 +57,5 @@ export const Meal = styled.Text`
 export const Bullet = styled(MaterialIcons) .attrs <Props>(({ theme, type }) => ({
     name: 'circle',
     size: 16,
-    color: type === 'PRIMARY' ? theme.COLORS.GREEN_MID : theme.COLORS.RED_MID
+    color: type === 'IN' ? theme.COLORS.GREEN_MID : theme.COLORS.RED_MID
 }))``;

@@ -15,7 +15,7 @@ export function NewMeal() {
 
     const [btnStatus, setBtnStatus] = useState('');
 
-    const onChange = (event: Event, selectedDate: Date) => {
+    const onChange = (event, selectedDate) => {
         const currentDate = selectedDate || date;
         setShow(Platform.OS === 'ios');
         setDate(currentDate);
@@ -28,7 +28,7 @@ export function NewMeal() {
         setTextHora(fTime);
     }
 
-    const showMode = (currentMode: string) => {
+    const showMode = (currentMode) => {
         setShow(true);
         setMode(currentMode);
     }
@@ -83,7 +83,7 @@ export function NewMeal() {
                         <MealButton
                             testID="yes"
                             onPress={() => buttonSelected('1')}
-                            style={btnStatus === '1' ? [styles.borderPrimary, styles.backPrimary] : [styles.borderDefault, styles.backDefault]}                                                 
+                            style={btnStatus === '1' ? [styles.borderIN, styles.backIN] : [styles.borderDefault, styles.backDefault]}                                                 
                         >
                             <MealBullet 
                                 color={theme.COLORS.GREEN_DARK}
@@ -95,7 +95,7 @@ export function NewMeal() {
                         <MealButton
                             testID="no"
                             onPress={() => buttonSelected('2')}
-                            style={btnStatus === '2' ? [styles.borderSecondary, styles.backSecondary] : [styles.borderDefault, styles.backDefault]} 
+                            style={btnStatus === '2' ? [styles.borderOUT, styles.backOUT] : [styles.borderDefault, styles.backDefault]} 
                         >
                             <MealBullet 
                                 color={theme.COLORS.RED_DARK}
@@ -115,16 +115,16 @@ export function NewMeal() {
 }
 
 const styles = StyleSheet.create({
-    borderPrimary: {
+    borderIN: {
         borderColor: theme.COLORS.GREEN_DARK,
     },
-    backPrimary: {
+    backIN: {
         backgroundColor: theme.COLORS.GREEN_LIGHT,
     },
-    borderSecondary: {
+    borderOUT: {
         borderColor: theme.COLORS.RED_DARK,
     },
-    backSecondary: {
+    backOUT: {
         backgroundColor: theme.COLORS.RED_LIGHT,
     },
     borderDefault: {
@@ -133,4 +133,4 @@ const styles = StyleSheet.create({
     backDefault: {
         backgroundColor: theme.COLORS.GRAY_600,
     }
-  });
+});

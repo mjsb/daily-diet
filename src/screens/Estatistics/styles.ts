@@ -1,6 +1,6 @@
 import styled, { css } from "styled-components/native";
 
-export type EstatisticStyleProps = 'PRIMARY' | 'SECONDARY';
+export type EstatisticStyleProps = 'IN' | 'OUT';
 
 type Props = {
     type: EstatisticStyleProps;
@@ -64,7 +64,7 @@ export const BoxMid = styled.View <Props>`
     justify-content: space-around;
 
     border-radius: 8px;
-    background-color: ${({ theme, type }) => type === 'PRIMARY' ? theme.COLORS.GREEN_LIGHT : theme.COLORS.RED_LIGHT};
+    background-color: ${({ theme, type }) => type === 'IN' ? theme.COLORS.GREEN_LIGHT : theme.COLORS.RED_LIGHT};
 `;
 
 export const TitleBox = styled.Text`

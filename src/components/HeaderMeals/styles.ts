@@ -1,7 +1,13 @@
 import styled, { css } from "styled-components/native";
 import { MaterialIcons } from "@expo/vector-icons";
 
-export const Container = styled.View`
+export type HeaderMealsStyleProps = 'PRIMARY' | 'IN' | 'OUT';
+
+type Props = {
+    type: HeaderMealsStyleProps;
+}
+
+export const Container = styled.View <Props>`
     width: 100%;
     height: 132px;
 
@@ -13,7 +19,7 @@ export const Container = styled.View`
 
     margin-bottom: -20px;
 
-    background-color: ${({ theme }) => theme.COLORS.GRAY_500};
+    background-color: ${({ theme, type }) => type === 'PRIMARY' ? theme.COLORS.GRAY_500 : type === 'IN' ? theme.COLORS.GREEN_LIGHT : theme.COLORS.RED_LIGHT};
 `;
 
 export const Content = styled.View`

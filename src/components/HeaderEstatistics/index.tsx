@@ -4,7 +4,7 @@ type Props = {
     type?: HeaderStyleProps;
 }
 
-export function HeaderEstatistic({ type = 'PRIMARY'}: Props) {
+export function HeaderEstatistic({ type = 'IN'}: Props) {
     return (
         <Container
             type={type}

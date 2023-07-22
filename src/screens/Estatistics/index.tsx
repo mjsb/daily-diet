@@ -19,13 +19,13 @@ export function Estatistics() {
                 </BoxFull>
                 <BoxMidContainer>
                     <BoxMid
-                        type="PRIMARY"
+                        type="IN"
                     >
                         <TitleBox>32</TitleBox>
                         <SubTitleBox>refeições dentro da dieta</SubTitleBox>
                     </BoxMid>
                     <BoxMid
-                        type="SECONDARY"
+                        type="OUT"
                     >
                         <TitleBox>77</TitleBox>
                         <SubTitleBox>refeições fora da dieta</SubTitleBox>

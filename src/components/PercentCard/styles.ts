@@ -2,7 +2,7 @@ import styled, { css } from "styled-components/native";
 import { TouchableOpacity } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 
-export type PercentCardStyleProps = 'PRIMARY' | 'SECONDARY';
+export type PercentCardStyleProps = 'IN' | 'OUT';
 
 type Props = {
     type: PercentCardStyleProps;
@@ -21,7 +21,7 @@ export const Container = styled(TouchableOpacity) <Props>`
 
     margin: 30px 0;
 
-    background-color: ${({ theme, type }) => type === 'PRIMARY' ? theme.COLORS.GREEN_LIGHT : theme.COLORS.RED_LIGHT};
+    background-color: ${({ theme, type }) => type === 'IN' ? theme.COLORS.GREEN_LIGHT : theme.COLORS.RED_LIGHT};
 `;
 
 export const Title = styled.Text`
@@ -49,11 +49,7 @@ export const BoxIcon = styled.View`
 export const Icon = styled(MaterialIcons).attrs <Props> (({ theme, type }) => ({
     size: 25,
     name: 'call-made',
-    color: type === 'PRIMARY' ? theme.COLORS.GREEN_DARK : theme.COLORS.RED_DARK,
+    color: type === 'IN' ? theme.COLORS.GREEN_DARK : theme.COLORS.RED_DARK,
 }))`
     text-align: right;
 `;
-
-// export const Icon = styled(MaterialIcons) <Props>`
-//     text-align: right;
-// `;

@@ -6,7 +6,7 @@ type Props = TouchableOpacityProps & {
     type: PercentCardStyleProps;
 }
 
-export function PercentCard({ title, type = 'PRIMARY' }: Props) {
+export function PercentCard({ title, type = 'IN' }: Props) {
     return (
         <Container type={type}>
             <BoxIcon>
