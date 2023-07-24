@@ -84,5 +84,6 @@ export const BulletDetail = styled(MaterialIcons).attrs<Props>(({ theme, type })
     name: 'circle',
     size: 12
 }))` 
-    margin-right: 8px;
+    margin-right: 8px; 
 `;
+
