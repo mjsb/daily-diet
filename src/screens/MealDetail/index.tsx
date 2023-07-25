@@ -21,14 +21,6 @@ export function MealDetail({type = 'IN', meal = 'Sanduíche', desc = 'Sanduíche
     const [showAlert, setShowAlert] = useState(false);
 
     function handleDeleteMeal() {
-        // Alert.alert(
-        //     'Remover turma',
-        //     'Deseja realmente excluir o registro da refeição?',
-        //     [
-        //         { text: 'Não', style: 'cancel' },
-        //         { text: 'Sim, excluir', onPress: () => groupRemove() }
-        //     ]
-        // );
         setShowAlert(true);
     }
 

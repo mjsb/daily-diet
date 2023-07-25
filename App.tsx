@@ -3,9 +3,9 @@ import { ThemeProvider } from 'styled-components';
 import { useFonts, NunitoSans_400Regular, NunitoSans_700Bold } from '@expo-google-fonts/nunito-sans';
 
 import { Loading } from '@components/Loading';
-
 import theme from '@theme/index';
-import { MealDetail } from '@screens/MealDetail';
+
+import { Routes } from '@routes/index';
 
 export default function App() {
   const [fontsLoaded] = useFonts({ NunitoSans_400Regular, NunitoSans_700Bold });
@@ -17,7 +17,7 @@ export default function App() {
         backgroundColor="transparent"
         translucent
       />
-      {fontsLoaded ? <MealDetail /> : <Loading />}
+      {fontsLoaded ? <Routes /> : <Loading />}
     </ThemeProvider>
   );
 }

@@ -5,11 +5,11 @@ import theme from "@theme/index";
 
 type Props = TouchableOpacityProps & {
     title: string;
-    type: ButtonTypeStyleProps;
+    type?: ButtonTypeStyleProps;
     onPress: () => void;
 }
 
-export function Button ({ title, type, onPress }: Props) {
+export function Button ({ title, type = 'PRIMARY', onPress }: Props) {
     return (
         <Container  
             type={type}
@@ -17,7 +17,7 @@ export function Button ({ title, type, onPress }: Props) {
         >
             {type && (
                 <AntDesign 
-                    color={type === 'IN' ? theme.COLORS.WHITE : theme.COLORS.GRAY_200}
+                    color={type === 'PRIMARY' ? theme.COLORS.WHITE : theme.COLORS.GRAY_200}
                     name={type === 'IN' ? 'edit' : type === 'OUT' ? 'delete' : 'plus'}
                     size={20}
                 />          

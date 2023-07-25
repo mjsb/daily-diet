@@ -8,9 +8,18 @@ import { Button } from '@components/Button';
 import { MealCard } from '@components/MealList';
 import { FlatList } from 'react-native';
 
+import { useNavigation } from '@react-navigation/native';
+
 export function Meals() {
 	const [datas, setDatas] = useState(['16.07.2023', '17.07.2023', '18.07.2023', '19.07.2023']);
 	const [meals, setMeals] = useState(['10:00', 'X-Tudo', 'NO']);
+
+	const navigation = useNavigation();
+
+	function handleNewMeal() {
+		navigation.navigate('new');
+	}
+
 	return (
 		<Container>
 			<Header />
@@ -21,6 +30,7 @@ export function Meals() {
 			<Title>Refeições</Title> 
 			<Button 
 				title="Nova refeição"
+				onPress={handleNewMeal}
 			/>  
 			<FlatList
 				data={datas}

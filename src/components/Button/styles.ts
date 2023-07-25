@@ -23,14 +23,14 @@ export const Container = styled(TouchableOpacity) <Props>`
 
     align-items: center;
 
-    background-color: ${({ theme, type }) => type === 'IN' ? theme.COLORS.GRAY_200 : theme.COLORS.GRAY_700};
+    background-color: ${({ theme, type }) => type === 'PRIMARY' ? theme.COLORS.GRAY_200 : theme.COLORS.GRAY_700};
 
     margin-top: 8px;
 `;
 
 export const ButtonText = styled.Text<Props>`
     ${({ theme, type }) => css`
-        color: ${type === 'IN' ? theme.COLORS.WHITE : theme.COLORS.GRAY_200};
+        color: ${type === 'PRIMARY' ? theme.COLORS.WHITE : theme.COLORS.GRAY_200};
         font-size: ${theme.FONT_SIZE.MD}px;
         font-family: ${theme.FONT_FAMILY.BOLD};
     `};

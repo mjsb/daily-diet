@@ -6,10 +6,10 @@ import confirmOUT from "@assets/confirmOUT.png";
 import { Text } from "react-native";
 
 type Props = {
-    type: NewMealStyleProps;
+    type?: NewMealStyleProps;
 }
 
-export function NewMealConfirm({type}: Props) {
+export function NewMealConfirm({type = 'IN'}: Props) {
     return (
         <Container>
             <Title
