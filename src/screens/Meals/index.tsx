@@ -29,6 +29,7 @@ export function Meals() {
 			/>
 			<Title>Refeições</Title> 
 			<Button 
+				type="ADD"
 				title="Nova refeição"
 				onPress={handleNewMeal}
 			/>  

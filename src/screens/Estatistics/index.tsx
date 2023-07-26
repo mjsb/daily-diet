@@ -1,11 +1,17 @@
 import { HeaderEstatistic } from "@components/HeaderEstatistics";
-import { BoxFull, BoxMid, BoxMidContainer, Container, SubTitleBox, Title, TitleBox } from "./styles";
+import { BoxFull, BoxMid, BoxMidContainer, Container, Content, EstatisticStyleProps, SubTitleBox, Title, TitleBox } from "./styles";
 
-export function Estatistics() {
+type Props = {
+    type: EstatisticStyleProps;
+}
+
+export function Estatistics({ type = 'IN' }: Props) {
     return (
-        <>
+        <Container
+            type={type}
+        >
             <HeaderEstatistic />
-            <Container>
+            <Content>
                 <Title>
                     Estatísticas gerais
                 </Title>
@@ -31,7 +37,7 @@ export function Estatistics() {
                         <SubTitleBox>refeições fora da dieta</SubTitleBox>
                     </BoxMid>
                 </BoxMidContainer>
-            </Container>
-        </>
+            </Content>
+        </Container>
     )
 }

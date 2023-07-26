@@ -9,7 +9,7 @@ type Props = {
 
 export const Container = styled.View <Props>`
     width: 100%;
-    height: 200px;   
+    height: 140px;   
     
     padding: 24px;
 
@@ -40,6 +40,11 @@ export const SubTitle = styled.Text`
         font-size: ${theme.FONT_SIZE.MD}px;
         font-family: ${theme.FONT_FAMILY.REGULAR};    
     `};
+`;
+
+export const BackButton = styled.TouchableOpacity`
+    width: 25px;
+    height: 25px;
 `;
 
 export const BackIcon = styled(MaterialIcons).attrs <Props>(({ theme, type }) => ({

@@ -1,5 +1,4 @@
 import styled, { css } from "styled-components/native";
-import { TouchableOpacity } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 
 export type PercentCardStyleProps = 'IN' | 'OUT';
@@ -8,7 +7,7 @@ type Props = {
     type: PercentCardStyleProps;
 }
 
-export const Container = styled(TouchableOpacity) <Props>`
+export const Container = styled.TouchableOpacity <Props>`
 
     width: 100%;
     height: auto;

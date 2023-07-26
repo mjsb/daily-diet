@@ -2,11 +2,15 @@ import { useState } from "react";
 import { Platform, StyleSheet } from "react-native";
 import { HeaderMeals } from "@components/HeaderMeals";
 import DateTimePicker from "@react-native-community/datetimepicker";
-import { Container, MealBoxFields, MealLabel, MealInput, MealTextArea, MealBoxField, MealInputDateTime, MealButton, MealBullet, MealFooter } from "./styles";
+import { Container, Content, MealBoxFields, MealLabel, MealInput, MealTextArea, MealBoxField, MealInputDateTime, MealButton, MealBullet, MealFooter, NewMealsStyleProps } from "./styles";
 import { Button } from "@components/Button";
 import theme from "@theme/index";
 
-export function NewMeal() {
+type Props = {
+    type: NewMealsStyleProps;
+}
+
+export function NewMeal({ type = 'PRIMARY'}: Props) {
     const [date, setDate] = useState(new Date());
     const [mode, setMode] = useState('date');
     const [show, setShow] = useState(false);
@@ -38,9 +42,11 @@ export function NewMeal() {
     }
     
     return (
-        <>
+        <Container
+            type={type}
+        >
             <HeaderMeals />
-            <Container>
+            <Content>
                 <MealLabel>Nome</MealLabel>
                 <MealInput />
                 <MealLabel>Descrição</MealLabel>
@@ -104,13 +110,14 @@ export function NewMeal() {
                         </MealButton>
                     </MealBoxField>
                 </MealBoxFields>
-            </Container>  
-            <MealFooter>
-                <Button 
-                    title="Cadastrar refeição"
-                />
-            </MealFooter>      
-        </>
+                <MealFooter>
+                    <Button 
+                        title="Cadastrar refeição"
+                        onPress={() => {}}
+                    />
+                </MealFooter>      
+            </Content>  
+        </Container>
     )
 }
 

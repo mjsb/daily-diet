@@ -15,10 +15,10 @@ export function Button ({ title, type = 'PRIMARY', onPress }: Props) {
             type={type}
             onPress={onPress}
         >
-            {type && (
+            {type !== 'PRIMARY' && (
                 <AntDesign 
-                    color={type === 'PRIMARY' ? theme.COLORS.WHITE : theme.COLORS.GRAY_200}
-                    name={type === 'IN' ? 'edit' : type === 'OUT' ? 'delete' : 'plus'}
+                    color={type === 'ADD' || type === 'EDIT' ? theme.COLORS.WHITE : theme.COLORS.GRAY_200}
+                    name={type === 'EDIT' ? 'edit' : type === 'DEL' ? 'delete' : type === 'ADD' ? 'plus' : 'minus'}
                     size={20}
                 />          
             )}

@@ -1,14 +1,22 @@
 import styled, { css } from "styled-components/native";
 import { MaterialIcons } from "@expo/vector-icons";
+import { SafeAreaView } from "react-native-safe-area-context";
 
-export type NewMealsStyleProps = 'IN' | 'OUT';
+export type NewMealsStyleProps =  'PRIMARY' | 'IN' | 'OUT';
 
 type Props = {
     type: NewMealsStyleProps;
 }
 
-export const Container = styled.View`
+export const Container = styled(SafeAreaView)<Props>`
     flex: 1;
+
+    background-color: ${({ theme, type }) => type === 'PRIMARY' ? theme.COLORS.GRAY_500 : type === 'IN' ? theme.COLORS.GREEN_LIGHT : theme.COLORS.RED_LIGHT};
+`;
+
+export const Content = styled.View`
+
+    width: 100%;
     height: auto;
 
     align-items: flex-start;
@@ -34,8 +42,9 @@ export const MealBoxFields = styled.View`
 
 export const MealBoxField = styled.View`
     width: 48%;
-    min-width: 153px;
     height: auto;
+    
+    min-width: 153px;
     
     align-items: flex-start;
 `;
@@ -128,6 +137,8 @@ export const MealBullet = styled(MaterialIcons).attrs({
 
 export const MealFooter = styled.View`
     width: 100%;
+    height: auto;
+
     padding: 24px;
     background-color: ${({ theme }) => theme.COLORS.GRAY_700};
 `;

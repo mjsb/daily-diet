@@ -1,16 +1,25 @@
 import { Container, Title, BackIcon, Content, BackButton, HeaderMealsStyleProps } from "./styles";
+import { useNavigation } from "@react-navigation/native";
 
 type Props = {
     type?: HeaderMealsStyleProps;
-    title: string;
+    title?: string;
 }
 
 export function HeaderMeals({type = 'ADD', title}: Props) {
+    const navigation = useNavigation();
+
+    function handleGoBack() {
+        navigation.goBack();
+    }
+
     return (
         <Container
             type={type}
         >
-            <BackButton>
+            <BackButton
+                onPress={handleGoBack}
+            >
                 <BackIcon />
             </BackButton>
             <Content>

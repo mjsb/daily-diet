@@ -1,4 +1,5 @@
 import { Container, Logo, Foto } from "./styles";
+
 import logoImg from '@assets/logo.png';
 import fotoImg from '@assets/foto.png';
 

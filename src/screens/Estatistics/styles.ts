@@ -1,4 +1,5 @@
 import styled, { css } from "styled-components/native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export type EstatisticStyleProps = 'IN' | 'OUT';
 
@@ -6,15 +7,20 @@ type Props = {
     type: EstatisticStyleProps;
 }
 
-export const Container = styled.View`
+export const Container = styled(SafeAreaView)<Props>`
+    flex: 1;
+    background-color: ${({ theme, type }) => type === 'IN' ? theme.COLORS.GREEN_LIGHT : theme.COLORS.RED_LIGHT}; 
+`;
+
+export const Content = styled.View`
     flex: 1;
 
     align-items: center;
     justify-content: start;
 
-    margin-top: -20px;
     padding: 33px 24px;
-    border-radius: 20px;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
 
     background-color: ${({ theme }) => theme.COLORS.WHITE};    
 `;

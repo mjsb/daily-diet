@@ -9,15 +9,15 @@ type Props = {
 
 export const Container = styled.View <Props>`
     width: 100%;
-    height: 132px;
+    height: 80px;
 
-    padding: 24px;
+    padding: 29px 24px 24px;
 
     flex-direction: row;
     align-items: center;
     justify-content: flex-start;
 
-    margin-bottom: -20px;
+    margin-bottom: 0px;
 
     background-color: ${({ theme, type }) => type === 'ADD' || type === 'EDIT' ? theme.COLORS.GRAY_500 : type === 'IN' ? theme.COLORS.GREEN_LIGHT : theme.COLORS.RED_LIGHT};
 `;
