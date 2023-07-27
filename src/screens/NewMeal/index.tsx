@@ -1,10 +1,12 @@
 import { useState } from "react";
-import { Platform, StyleSheet } from "react-native";
+import { Alert, Platform, StyleSheet } from "react-native";
 import { HeaderMeals } from "@components/HeaderMeals";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { Container, Content, MealBoxFields, MealLabel, MealInput, MealTextArea, MealBoxField, MealInputDateTime, MealButton, MealBullet, MealFooter, NewMealsStyleProps } from "./styles";
 import { Button } from "@components/Button";
 import theme from "@theme/index";
+import { AppError } from "@utils/appError";
+import { mealCreate } from "@storage/Meal/mealCreate";
 
 type Props = {
     type: NewMealsStyleProps;
@@ -14,12 +16,15 @@ export function NewMeal({ type = 'PRIMARY'}: Props) {
     const [date, setDate] = useState(new Date());
     const [mode, setMode] = useState('date');
     const [show, setShow] = useState(false);
+    
+    const [name, setName] = useState('');
+    const [description, setDescription] = useState('');
     const [textDate, setTextDate] = useState('');
     const [textHora, setTextHora] = useState('');
-
     const [btnStatus, setBtnStatus] = useState('');
 
-    const onChange = (event, selectedDate) => {
+
+    const onChange = (event: any, selectedDate: any) => {
         const currentDate = selectedDate || date;
         setShow(Platform.OS === 'ios');
         setDate(currentDate);
@@ -32,13 +37,50 @@ export function NewMeal({ type = 'PRIMARY'}: Props) {
         setTextHora(fTime);
     }
 
-    const showMode = (currentMode) => {
+    const showMode = (currentMode: any) => {
         setShow(true);
         setMode(currentMode);
     }
 
     function buttonSelected(id: string) {
         setBtnStatus(id);
+    }
+
+    function handleNameChange(name: string) {
+        setName(name);
+    }
+
+    function handleDescriptionChange(description: string) {
+        setDescription(description);
+    }
+    
+    async function handleNewMeal() {
+        try {
+
+            const formData = {
+                name: name,
+                description: description,
+                date: textDate,
+                hour: textHora,
+                status: btnStatus
+            };
+
+            /*setMeal(JSON.stringify(data));*/
+            
+            await mealCreate(JSON.stringify(formData));
+
+            Alert.alert('WOW!', JSON.stringify(formData));
+            
+        } catch (error) {
+
+            if(error instanceof AppError) {
+                Alert.alert('Nova refeição', error.message);
+            } else {
+                Alert.alert('Nova refeição', 'Não foi possível cadastrar essa refeição!');
+                console.log(error);
+            }
+            
+        }
     }
     
     return (
@@ -48,10 +90,13 @@ export function NewMeal({ type = 'PRIMARY'}: Props) {
             <HeaderMeals />
             <Content>
                 <MealLabel>Nome</MealLabel>
-                <MealInput />
+                <MealInput 
+                    onChangeText={handleNameChange}
+                />
                 <MealLabel>Descrição</MealLabel>
                 <MealTextArea 
                     multiline={true}
+                    onChangeText={handleDescriptionChange}
                 />
                 <MealBoxFields>
                     <MealBoxField>
@@ -113,7 +158,7 @@ export function NewMeal({ type = 'PRIMARY'}: Props) {
                 <MealFooter>
                     <Button 
                         title="Cadastrar refeição"
-                        onPress={() => {}}
+                        onPress={handleNewMeal}
                     />
                 </MealFooter>      
             </Content>  

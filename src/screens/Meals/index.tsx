@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { Header } from '@components/Header';
 import { Container, DateList, Title } from './styles';
 
@@ -8,17 +8,38 @@ import { Button } from '@components/Button';
 import { MealCard } from '@components/MealList';
 import { FlatList } from 'react-native';
 
-import { useNavigation } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
+import { mealGetAll } from '@storage/Meal/mealGetAll';
 
 export function Meals() {
-	const [datas, setDatas] = useState(['16.07.2023', '17.07.2023', '18.07.2023', '19.07.2023']);
-	const [meals, setMeals] = useState(['10:00', 'X-Tudo', 'NO']);
+	const [datas, setDatas] = useState([]);
+	const [meals, setMeals] = useState<string[]>([]);
 
 	const navigation = useNavigation();
 
 	function handleNewMeal() {
 		navigation.navigate('new');
 	}
+
+	async function fetchMeals() {
+
+		try {
+
+			const data = await mealGetAll();
+			setMeals(data);
+			console.log(data);
+			
+		} catch (error) {
+
+			throw error;
+			
+		}
+		
+	}
+
+	useFocusEffect(useCallback(() => {
+		fetchMeals();
+	}, []));
 
 	return (
 		<Container>
