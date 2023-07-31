@@ -14,7 +14,7 @@ type Props = {
 
 export function NewMeal({ type = 'PRIMARY'}: Props) {
     const [date, setDate] = useState(new Date());
-    const [mode, setMode] = useState('date');
+    const [mode, setMode] = useState();
     const [show, setShow] = useState(false);
     
     const [name, setName] = useState('');
@@ -57,7 +57,30 @@ export function NewMeal({ type = 'PRIMARY'}: Props) {
     async function handleNewMeal() {
         try {
 
+            let msn = '';
+
+            if(name.trim().length === 0) {
+                msn = 'Informe um nome!\n';
+            }
+
+            if(textDate.trim().length === 0) {
+                msn += 'Informe uma data!\n';
+            }
+
+            if(textHora.trim().length === 0) {
+                msn += 'Informe um horário!\n';
+            }
+
+            if(btnStatus.trim().length === 0) {
+                msn += 'Informe se a refeição está ou não dentro da dieta!';
+            }
+
+            if(msn.trim().length !== 0) {
+                return Alert.alert('Atenção!', msn);
+            }
+
             const formData = {
+                id: new Date().getTime(),
                 name: name,
                 description: description,
                 date: textDate,
@@ -65,11 +88,10 @@ export function NewMeal({ type = 'PRIMARY'}: Props) {
                 status: btnStatus
             };
 
-            /*setMeal(JSON.stringify(data));*/
-            
-            await mealCreate(JSON.stringify(formData));
+            await mealCreate(formData, textDate);         
 
-            Alert.alert('WOW!', JSON.stringify(formData));
+            //Alert.alert('WOW!', JSON.stringify(textDate));
+            //Alert.alert('WOW!', JSON.stringify(formData));
             
         } catch (error) {
 

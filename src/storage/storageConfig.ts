@@ -1,3 +1,4 @@
+const DATE_COLLECTION = '@daily-diet:dates';
 const MEAL_COLLECTION = '@daily-diet:meals';
 
-export { MEAL_COLLECTION };
+export { DATE_COLLECTION, MEAL_COLLECTION };

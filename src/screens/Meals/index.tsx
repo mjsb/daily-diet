@@ -10,12 +10,14 @@ import { FlatList } from 'react-native';
 
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { mealGetAll } from '@storage/Meal/mealGetAll';
+import { MealStorageDTO } from '@storage/Meal/MealStorageDTO';
 
 export function Meals() {
-	const [datas, setDatas] = useState([]);
-	const [meals, setMeals] = useState<string[]>([]);
+	const [meals, setMeals] = useState<MealStorageDTO[]>([]);
 
 	const navigation = useNavigation();
+
+	let varData = '';
 
 	function handleNewMeal() {
 		navigation.navigate('new');
@@ -25,13 +27,19 @@ export function Meals() {
 
 		try {
 
-			const data = await mealGetAll();
-			setMeals(data);
-			console.log(data);
+			const meal = await mealGetAll();
+			setMeals(meal);
+			console.log('Refeições: '+meals);
+
+			//const keys = [DATE_COLLECTION, MEAL_COLLECTION];
+			//await AsyncStorage.multiRemove(keys);
 			
+			//const onlyDates = meal.filter(meals => meals.date === '29/07/2023');
+			//console.log('Só as datas: '+onlyDates);
+
 		} catch (error) {
 
-			throw error;
+			throw error; 
 			
 		}
 		
@@ -55,31 +63,30 @@ export function Meals() {
 				onPress={handleNewMeal}
 			/>  
 			<FlatList
-				data={datas}
-				keyExtractor={item => item}
+				data={}
+				keyExtractor={item => item.id}
 				renderItem={({ item }) => (
-					<>
-						<DateList>
-							{item}
-						</DateList>
+						<>
+							<DateList>
+								{item.date}
+							</DateList>
+							<FlatList
+								data={meals}
+								keyExtractor={item => item.id}
+								renderItem={({ item }) => (
+										<MealCard 
+											hora={item.hour}
+											meal={item.name}
+											type={item.status === '2' ? 'OUT' : 'IN'}
+										/>
+									)
 
-						<FlatList
-							data={meals}
-							keyExtractor={item => item}
-							renderItem={({ item }) => (
-								
-								<MealCard 
-									hora={item}
-									meal={item}
-									type={item === 'NO' ? 'OUT' : 'IN'}
-								/>
-
-							)}
-						
-						>
-						</FlatList>					
-					</>
-				)}
+								}								
+							
+							>
+							</FlatList>					
+						</>)
+					}
 				showsVerticalScrollIndicator={false}	
 				fadingEdgeLength={300}
 			>
