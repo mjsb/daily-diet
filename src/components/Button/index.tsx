@@ -29,6 +29,5 @@ export function Button ({ title, type = 'PRIMARY', onPress }: Props) {
                 {title}
             </ButtonText>
         </Container>
-
     )
 }

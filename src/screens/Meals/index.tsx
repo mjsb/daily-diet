@@ -62,7 +62,7 @@ export function Meals() {
 				title="Nova refeição"
 				onPress={handleNewMeal}
 			/>  
-			<FlatList
+			{/* <FlatList
 				data={}
 				keyExtractor={item => item.id}
 				renderItem={({ item }) => (
@@ -90,7 +90,7 @@ export function Meals() {
 				showsVerticalScrollIndicator={false}	
 				fadingEdgeLength={300}
 			>
-			</FlatList>  
+			</FlatList>   */}
 		</Container>
 		
 	);

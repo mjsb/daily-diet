@@ -1,10 +1,10 @@
 export type MealStorageDTO = {
-    title: Date;
+    id: string | number;
+    title: string | Date;
     data: {
-        id: number;
         name: string;
         description: string;
-        hour: string;
+        hour: string | Date;
         status: string;
     };
 }

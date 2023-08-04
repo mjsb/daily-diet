@@ -81,11 +81,13 @@ export function NewMeal({ type = 'PRIMARY'}: Props) {
 
             const formData = {
                 id: new Date().getTime(),
-                name: name,
-                description: description,
-                date: textDate,
-                hour: textHora,
-                status: btnStatus
+                title: textDate,
+                data: {
+                    name: name,
+                    description: description,
+                    hour: textHora,
+                    status: btnStatus
+                }
             };
 
             await mealCreate(formData, textDate);         
