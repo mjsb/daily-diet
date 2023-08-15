@@ -1,33 +1,36 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { MEAL_COLLECTION } from "@storage/storageConfig";
-import { mealGetByDate } from "./mealGetByDate";
-import { AppError } from "@utils/appError";
+import { mealGetAll } from "./mealGetAll";
 import { MealStorageDTO } from "./MealStorageDTO";
-import { Alert } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 
-export async function mealCreate(newMeal: MealStorageDTO, data: string) {
+export async function mealCreate(newMeal: MealStorageDTO) {
+    
     try {
-
-        const storedMeals = await mealGetByDate(data);
-        const mealAlreadyExists = storedMeals.filter(meals => meals.title === data);
-
-        if(mealAlreadyExists.length > 0) {
-            console.log(mealAlreadyExists);
-            console.log(newMeal.data);
-            console.log('Ok!'+storedMeals);
-            
-            // mealAlreadyExists[0]['data'].push(newMeal.data);
-            // console.log(mealAlreadyExists);
-            throw new AppError('Já existe uma refeição registrada nesta data!');
+        
+        const navigate = useNavigation();
+        const storedMeals = await mealGetAll();
+        // const mealAlreadyExists = storedMeals.filter(meals => meals.title === newMeal.title);
+        
+        const allMeals = [...storedMeals, newMeal];
+        
+        const sortHour = allMeals.sort(compareHour);
+        const sortDate = sortHour.sort(compareDate);
+        
+        // const storage = JSON.stringify([...storedMeals, newMeal]);
+        const storage = JSON.stringify(sortDate);
+        await AsyncStorage.setItem(`${MEAL_COLLECTION}`, storage); 
+        
+        function compareDate(a: any, b: any) {
+            return b.sort_date - a.sort_date;
         }
         
-        const storage = JSON.stringify([...storedMeals, newMeal]);
+        function compareHour(a: any, b: any) {
+            return a.sort_hour - b.sort_hour;
+        }
 
-        Alert.alert('OK', storage);
-        await AsyncStorage.setItem(`${MEAL_COLLECTION}-${data}`, storage);
+        navigate.navigate('meals');
 
-        // AsyncStorage.clear();
-        
     } catch (error) {
 
         throw error;

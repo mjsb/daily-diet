@@ -1,23 +1,19 @@
-import { useCallback, useState } from 'react';
+import { FlatList } from 'react-native';
+import { useState, useCallback } from 'react';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
+
 import { Header } from '@components/Header';
+import { Button } from '@components/Button';
+import { MealCard } from '@components/MealList';
+import { PercentCard } from '@components/PercentCard';
+
 import { Container, DateList, Title } from './styles';
 
-import { PercentCard } from '@components/PercentCard';
-import { Button } from '@components/Button';
-
-import { MealCard } from '@components/MealList';
-import { FlatList } from 'react-native';
-
-import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { mealGetAll } from '@storage/Meal/mealGetAll';
-import { MealStorageDTO } from '@storage/Meal/MealStorageDTO';
 
 export function Meals() {
-	const [meals, setMeals] = useState<MealStorageDTO[]>([]);
-
+	const [meals, setMeals] = useState<any[]>([]);
 	const navigation = useNavigation();
-
-	let varData = '';
 
 	function handleNewMeal() {
 		navigation.navigate('new');
@@ -27,15 +23,31 @@ export function Meals() {
 
 		try {
 
-			const meal = await mealGetAll();
-			setMeals(meal);
-			console.log('Refeições: '+meals);
-
-			//const keys = [DATE_COLLECTION, MEAL_COLLECTION];
-			//await AsyncStorage.multiRemove(keys);
+			const foods = await mealGetAll();
+			console.log(foods);
+			const meal = foods.reduce((acc: any, food) => {
+				if (!acc[food.date]) {
+					acc[food.date] = [];
+				}
+				acc[food.date].push(food);
+				return acc;
+			}, {});
 			
-			//const onlyDates = meal.filter(meals => meals.date === '29/07/2023');
-			//console.log('Só as datas: '+onlyDates);
+			console.log(meal);
+
+			const sectionListData = Object.keys(meal).map((item) => {
+				const data = meal[item];
+				return {
+					id: item,
+					title: item,
+					data,
+				};
+			});
+			
+			setMeals(sectionListData);
+			console.log(meals);
+			// AsyncStorage.clear();
+			// setMeals([]);
 
 		} catch (error) {
 
@@ -46,6 +58,7 @@ export function Meals() {
 	}
 
 	useFocusEffect(useCallback(() => {
+		setMeals([]);
 		fetchMeals();
 	}, []));
 
@@ -62,35 +75,35 @@ export function Meals() {
 				title="Nova refeição"
 				onPress={handleNewMeal}
 			/>  
-			{/* <FlatList
-				data={}
+			<FlatList
+				data={meals}
 				keyExtractor={item => item.id}
 				renderItem={({ item }) => (
-						<>
-							<DateList>
-								{item.date}
-							</DateList>
-							<FlatList
-								data={meals}
-								keyExtractor={item => item.id}
-								renderItem={({ item }) => (
-										<MealCard 
-											hora={item.hour}
-											meal={item.name}
-											type={item.status === '2' ? 'OUT' : 'IN'}
-										/>
-									)
+					<>
+						<DateList>
+							{item.title.replaceAll('/','.')}
+						</DateList>
 
-								}								
-							
-							>
-							</FlatList>					
-						</>)
-					}
+						<FlatList 
+							data={item.data}
+							keyExtractor={item => item.data}
+							renderItem={({ item }) => (
+						
+								<MealCard 
+									hora={item.hour}
+									meal={item.name}
+									type={item.status === '2' ? 'OUT' : 'IN'}
+								/>	
+
+							)}
+						/>
+											
+					</>
+				)}
 				showsVerticalScrollIndicator={false}	
 				fadingEdgeLength={300}
 			>
-			</FlatList>   */}
+			</FlatList>  
 		</Container>
 		
 	);

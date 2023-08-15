@@ -1,12 +1,18 @@
 import { useState } from "react";
 import { Alert, Platform, StyleSheet } from "react-native";
-import { HeaderMeals } from "@components/HeaderMeals";
-import DateTimePicker from "@react-native-community/datetimepicker";
-import { Container, Content, MealBoxFields, MealLabel, MealInput, MealTextArea, MealBoxField, MealInputDateTime, MealButton, MealBullet, MealFooter, NewMealsStyleProps } from "./styles";
+
 import { Button } from "@components/Button";
+import { HeaderMeals } from "@components/HeaderMeals";
+
+import DateTimePicker from "@react-native-community/datetimepicker";
+
+import { Container, Content, MealBoxFields, MealLabel, MealInput, MealTextArea, MealBoxField, MealInputDateTime, MealButton, MealBullet, MealFooter, NewMealsStyleProps } from "./styles";
+
 import theme from "@theme/index";
 import { AppError } from "@utils/appError";
 import { mealCreate } from "@storage/Meal/mealCreate";
+
+// import uuid from 'react-native-uuid';
 
 type Props = {
     type: NewMealsStyleProps;
@@ -23,6 +29,7 @@ export function NewMeal({ type = 'PRIMARY'}: Props) {
     const [textHora, setTextHora] = useState('');
     const [btnStatus, setBtnStatus] = useState('');
 
+    // const uid = uuid.v4();
 
     const onChange = (event: any, selectedDate: any) => {
         const currentDate = selectedDate || date;
@@ -79,21 +86,21 @@ export function NewMeal({ type = 'PRIMARY'}: Props) {
                 return Alert.alert('Atenção!', msn);
             }
 
-            const formData = {
-                id: new Date().getTime(),
-                title: textDate,
-                data: {
-                    name: name,
-                    description: description,
-                    hour: textHora,
-                    status: btnStatus
-                }
+            const splitDate = textDate.split('/');
+            const splitHour = textHora.split(':'); 
+
+            const formData = {                
+                id: new Date(splitDate[2] + '-' + splitDate[1] + '-' + splitDate[0]).getTime().toString(),
+                sort_date: new Date(splitDate[2] + '-' + splitDate[1] + '-' + splitDate[0]).getTime().toString(),
+                sort_hour: new Date(Number(splitDate[2]), Number(splitDate[1]), Number(splitDate[0]), Number(splitHour[0]), Number(splitHour[1])).getTime().toString(),
+                date: textDate,
+                hour: textHora,
+                name: name,
+                description: description,
+                status: btnStatus                
             };
 
-            await mealCreate(formData, textDate);         
-
-            //Alert.alert('WOW!', JSON.stringify(textDate));
-            //Alert.alert('WOW!', JSON.stringify(formData));
+            await mealCreate(formData);         
             
         } catch (error) {
 
@@ -105,6 +112,7 @@ export function NewMeal({ type = 'PRIMARY'}: Props) {
             }
             
         }
+        
     }
     
     return (
