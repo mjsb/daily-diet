@@ -12,7 +12,9 @@ import theme from "@theme/index";
 import { AppError } from "@utils/appError";
 import { mealCreate } from "@storage/Meal/mealCreate";
 
-// import uuid from 'react-native-uuid';
+import { useNavigation } from "@react-navigation/native";
+
+import uuid from 'react-native-uuid';
 
 type Props = {
     type: NewMealsStyleProps;
@@ -29,7 +31,7 @@ export function NewMeal({ type = 'PRIMARY'}: Props) {
     const [textHora, setTextHora] = useState('');
     const [btnStatus, setBtnStatus] = useState('');
 
-    // const uid = uuid.v4();
+    const navigation = useNavigation();
 
     const onChange = (event: any, selectedDate: any) => {
         const currentDate = selectedDate || date;
@@ -90,7 +92,7 @@ export function NewMeal({ type = 'PRIMARY'}: Props) {
             const splitHour = textHora.split(':'); 
 
             const formData = {                
-                id: new Date(splitDate[2] + '-' + splitDate[1] + '-' + splitDate[0]).getTime().toString(),
+                id: uuid.v4(),
                 sort_date: new Date(splitDate[2] + '-' + splitDate[1] + '-' + splitDate[0]).getTime().toString(),
                 sort_hour: new Date(Number(splitDate[2]), Number(splitDate[1]), Number(splitDate[0]), Number(splitHour[0]), Number(splitHour[1])).getTime().toString(),
                 date: textDate,
@@ -100,7 +102,8 @@ export function NewMeal({ type = 'PRIMARY'}: Props) {
                 status: btnStatus                
             };
 
-            await mealCreate(formData);         
+            await mealCreate(formData); 
+            navigation.navigate('meals');        
             
         } catch (error) {
 

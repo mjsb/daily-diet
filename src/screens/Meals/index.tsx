@@ -10,6 +10,7 @@ import { PercentCard } from '@components/PercentCard';
 import { Container, DateList, Title } from './styles';
 
 import { mealGetAll } from '@storage/Meal/mealGetAll';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export function Meals() {
 	const [meals, setMeals] = useState<any[]>([]);
@@ -96,10 +97,11 @@ export function Meals() {
 								/>	
 
 							)}
-						/>
+						/>	
 											
 					</>
 				)}
+
 				showsVerticalScrollIndicator={false}	
 				fadingEdgeLength={300}
 			>
