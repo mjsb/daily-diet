@@ -2,6 +2,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { MEAL_COLLECTION } from "@storage/storageConfig";
 import { mealGetAll } from "./mealGetAll";
 import { MealStorageDTO } from "./MealStorageDTO";
+import { AppError } from "@utils/appError";
 
 export async function mealCreate(newMeal: MealStorageDTO) {
 
@@ -16,7 +17,11 @@ export async function mealCreate(newMeal: MealStorageDTO) {
     try {
         
         const storedMeals = await mealGetAll();
-        // const mealAlreadyExists = storedMeals.filter(meals => meals.title === newMeal.title);
+        const mealAlreadyExists = storedMeals.filter(meals => meals.sort_date === newMeal.sort_date && meals.sort_hour === newMeal.sort_hour);
+
+        if ( mealAlreadyExists.length > 0 ) {
+            throw new AppError('Já existe uma refeição cadastrada nesta mesma data e horário!');
+        }
         
         const allMeals = [...storedMeals, newMeal];
         

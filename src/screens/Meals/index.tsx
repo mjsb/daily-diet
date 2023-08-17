@@ -14,7 +14,16 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export function Meals() {
 	const [meals, setMeals] = useState<any[]>([]);
+	const [percent, setPercent] = useState<any>(0);
+	const [type, setType] = useState<any>('');
+
 	const navigation = useNavigation();
+
+	const meals_in = [];
+	const meals_out = [];
+
+	let res: string;
+	let typ: string;
 
 	function handleNewMeal() {
 		navigation.navigate('new');
@@ -24,8 +33,14 @@ export function Meals() {
 
 		try {
 
+			setType('');
+			setMeals([]);
+			setPercent(0);
+			meals_in.length = 0;
+			meals_out.length = 0;
+
 			const foods = await mealGetAll();
-			console.log(foods);
+			// console.log(foods);
 			const meal = foods.reduce((acc: any, food) => {
 				if (!acc[food.date]) {
 					acc[food.date] = [];
@@ -33,8 +48,36 @@ export function Meals() {
 				acc[food.date].push(food);
 				return acc;
 			}, {});
+
+			// console.log(meal);	
+
+			foods.forEach(element => {
+
+				if ( element.status === '1' ) {
+					meals_in.push(element.status);
+				} else {
+					meals_out.push(element.status);
+				}
+
+			});
+
+			const percent_in = meals_in.length / foods.length * 100;
+			// const percent_out = meals_out.length / foods.length * 100;
+
+			if ( percent_in >= 60 ) {
+
+				res = (meals_in.length / foods.length * 100).toLocaleString('PT', {maximumFractionDigits: 2 });
+				typ = 'IN';
+
+			} else if ( percent_in < 60 ) {
+
+				res = (meals_out.length / foods.length * 100).toLocaleString('PT', {maximumFractionDigits: 2 });
+				typ = 'OUT';
+
+			}			
 			
-			console.log(meal);
+			setPercent(res);
+			setType(typ);
 
 			const sectionListData = Object.keys(meal).map((item) => {
 				const data = meal[item];
@@ -46,7 +89,7 @@ export function Meals() {
 			});
 			
 			setMeals(sectionListData);
-			console.log(meals);
+			// console.log(meals);
 			// AsyncStorage.clear();
 			// setMeals([]);
 
@@ -58,18 +101,20 @@ export function Meals() {
 		
 	}
 
-	useFocusEffect(useCallback(() => {
-		setMeals([]);
+	useFocusEffect(useCallback(() => {		
 		fetchMeals();
 	}, []));
 
 	return (
 		<Container>
 			<Header />
-			<PercentCard
-				type="IN"
-				title="90,86%"
-			/>
+			{ percent !== '0' &&
+				<PercentCard
+					type={type}
+					title={percent}
+					subtitle={type === 'IN' ? 'dentro' : 'fora'}
+				/>
+			}
 			<Title>Refeições</Title> 
 			<Button 
 				type="ADD"
@@ -87,7 +132,7 @@ export function Meals() {
 
 						<FlatList 
 							data={item.data}
-							keyExtractor={item => item.data}
+							keyExtractor={item => item.sort_hour}
 							renderItem={({ item }) => (
 						
 								<MealCard 
@@ -104,6 +149,7 @@ export function Meals() {
 
 				showsVerticalScrollIndicator={false}	
 				fadingEdgeLength={300}
+
 			>
 			</FlatList>  
 		</Container>

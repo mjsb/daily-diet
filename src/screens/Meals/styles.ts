@@ -13,6 +13,7 @@ export const Title = styled.Text`
         font-size: ${theme.FONT_SIZE.MD}px;
         font-family: ${theme.FONT_FAMILY.REGULAR};    
     `};
+    margin-top: 30px;
     margin-bottom: 10px;
 `;
 

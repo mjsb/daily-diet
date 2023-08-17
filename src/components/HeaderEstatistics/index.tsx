@@ -3,9 +3,11 @@ import { useNavigation } from "@react-navigation/native";
 
 type Props = {
     type?: HeaderStyleProps;
+    title: string;
+    subtitle: string;
 }
 
-export function HeaderEstatistic({ type = 'IN'}: Props) {
+export function HeaderEstatistic({ type = 'IN', title, subtitle }: Props) {
     const navigation = useNavigation();
 
     function handleGoBack() {
@@ -24,8 +26,8 @@ export function HeaderEstatistic({ type = 'IN'}: Props) {
                 />
             </BackButton>
             <Content>
-                <Title>30,21%</Title>
-                <SubTitle>das refeições dentro da dieta</SubTitle>
+                <Title>{title}%</Title>
+                <SubTitle>das refeições {subtitle} da dieta</SubTitle>
             </Content>
         </Container>
     )

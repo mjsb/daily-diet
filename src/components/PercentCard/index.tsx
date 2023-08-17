@@ -4,10 +4,11 @@ import { useNavigation } from "@react-navigation/native";
 
 type Props = TouchableOpacityProps & {
     title: string;
+    subtitle: string;
     type: PercentCardStyleProps;
 }
 
-export function PercentCard({ title, type = 'IN'}: Props) {
+export function PercentCard({ title, subtitle, type = 'IN'}: Props) {
     const navigation = useNavigation();
 
     function handlePercent() {
@@ -17,16 +18,18 @@ export function PercentCard({ title, type = 'IN'}: Props) {
     return (
         <Container 
             type={type}
-            onPress={handlePercent}    
-        >
-            <BoxIcon>
+            >
+            <BoxIcon
+                type={type}
+                onPress={handlePercent}                
+            >
                 <Icon type={type} />
             </BoxIcon>
             <Title>
-                {title}
+                {title}%
             </Title>
             <SubTitle>
-                das refeições dentro da dieta
+                das refeições {subtitle} da dieta
             </SubTitle>
         </Container>
     );
