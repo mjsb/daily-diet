@@ -1,25 +1,62 @@
-import { HeaderMeals } from "@components/HeaderMeals";
-import { Container, Title, SubTitle, BulletDetail, StatusDetail, FooterDetail, MealDetailStyleProps, Texto, TextoStatusDetail } from "./styles";
-import { Button } from "@components/Button";
-import { ButtonText } from "@components/Button/styles";
-import theme from "@theme/index";
+import { useCallback, useState } from "react";
 import { Alert, StyleSheet } from "react-native";
 import AwesomeAlert from "react-native-awesome-alerts";
-import { useState } from "react";
+import { useFocusEffect, useNavigation, useRoute } from "@react-navigation/native";
 
-type Props = {
-    type?: MealDetailStyleProps;
-    meal?: string;
-    desc?: string;
-    data?: string;
-    hora?: string;
-    title?: string;
+import { Button } from "@components/Button";
+import { HeaderMeals } from "@components/HeaderMeals";
+import { ButtonText } from "@components/Button/styles";
+
+import theme from "@theme/index";
+import { Container, Content, Title, SubTitle, BulletDetail, StatusDetail, FooterDetail, MealDetailStyleProps, Texto, TextoStatusDetail } from "./styles";
+
+import { mealGetAll } from "@storage/Meal/mealGetAll";
+
+type RouteParams = {
+    meal: string;
 }
 
-export function MealDetail({type = 'IN', meal = 'Sanduíche', desc = 'Sanduíche de pão integral com atum e salada de alface e tomate', data = '21/07/2023', hora = '23:34', title = 'Refeição'}: Props) {
+export function MealDetail() {
 
     const [showAlert, setShowAlert] = useState(false);
+    const [nameFood, setNameFood] = useState<string>();
+    const [descFood, setDescFood] = useState<string>();
+    const [dateFood, setDateFood] = useState<string>();
+    const [hourFood, setHourFood] = useState<string>();
+    const [typeFood, setTypeFood] = useState<MealDetailStyleProps>('PRIMARY');
 
+    const navigation = useNavigation();
+
+    const route = useRoute();    
+    const { meal } = route.params as RouteParams;
+    
+    async function fetchMeal() {
+        
+        try {
+            
+            const stored = await mealGetAll();
+            const food = stored.filter(item => item.id === meal);
+            
+            const type = food[0].status === '1' ? 'IN' : 'OUT';
+            
+            setTypeFood(type);
+            setNameFood(food[0].name);
+            setDescFood(food[0].description);
+            setDateFood(food[0].date);
+            setHourFood(food[0].hour);            
+            
+        } catch (error) {
+            
+            throw error;
+
+        }
+
+    }
+
+    function handleEditMeal() {
+        navigation.navigate('edit', { meal: meal, type: typeFood });
+    }
+    
     function handleDeleteMeal() {
         setShowAlert(true);
     }
@@ -28,45 +65,51 @@ export function MealDetail({type = 'IN', meal = 'Sanduíche', desc = 'Sanduíche
         Alert.alert('Atenção!','OK');        
     }
 
+    useFocusEffect(useCallback(() => {		
+		fetchMeal();
+	}, []));
+
     return (
-        <>
+        <Container
+            type={typeFood}
+        >
             <HeaderMeals 
-                type={type}
-                title={title}
+                type={typeFood}
+                mode="VIEW"
             />
-            <Container>
-                <Title>{meal}</Title>
-                <Texto>{desc}</Texto>
+            <Content>
+                <Title>{nameFood}</Title>
+                <Texto>{descFood}</Texto>
                 <SubTitle>Data e hora</SubTitle>
-                <Texto>{data} às {hora}</Texto>
+                <Texto>{dateFood} às {hourFood}</Texto>
                 <StatusDetail>
                     <BulletDetail
-                        color={type === 'IN' ? theme.COLORS.GREEN_DARK : theme.COLORS.RED_DARK}
+                        color={typeFood === 'IN' ? theme.COLORS.GREEN_DARK : theme.COLORS.RED_DARK}
                     />
                     <TextoStatusDetail>
-                        {type === 'IN' ? 'dentro da dieta' : 'fora da dieta'}
+                        {typeFood === 'IN' ? 'dentro da dieta' : 'fora da dieta'}
                     </TextoStatusDetail>
                 </StatusDetail>
-            </Container>
+            </Content>
             <FooterDetail>
                 <Button
-                    type="IN"                   
+                    type="EDIT"                   
                     title="Editar refeição"
-                    onPress={() => handleDeleteMeal()}
+                    onPress={() => handleEditMeal()}
                 >
                     <ButtonText
-                        type="IN"
+                        type="EDIT"
                     >
                         Editar refeição
                     </ButtonText>
                 </Button>
                 <Button
-                    type="OUT"
+                    type="DEL"
                     title="Excluir refeição"
                     onPress={() => handleDeleteMeal()}
                 >
                     <ButtonText
-                        type="OUT"
+                        type="DEL"
                     >
                         Excluir refeição
                     </ButtonText>
@@ -91,7 +134,7 @@ export function MealDetail({type = 'IN', meal = 'Sanduíche', desc = 'Sanduíche
                 confirmButtonStyle={styles.confirm}
                 confirmButtonTextStyle={styles.confirmText}
             />
-        </>
+        </Container>
     )
 }
 

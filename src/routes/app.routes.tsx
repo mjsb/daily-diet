@@ -28,6 +28,10 @@ export function AppRoutes() {
                 component={NewMeal}
             />
             <Screen 
+                name="edit"
+                component={NewMeal}
+            />
+            <Screen 
                 name="confirm"
                 component={NewMealConfirm}
             />

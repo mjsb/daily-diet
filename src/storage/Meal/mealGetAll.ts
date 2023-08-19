@@ -5,8 +5,8 @@ import { MealStorageDTO } from "./MealStorageDTO";
 export async function mealGetAll() {
     try {
         
-        const storage = await AsyncStorage.getItem(MEAL_COLLECTION);
-        const meal: MealStorageDTO[] = storage ? JSON.parse(storage) : [];
+        const stored = await AsyncStorage.getItem(MEAL_COLLECTION);
+        const meal: MealStorageDTO[] = stored ? JSON.parse(stored) : [];
 
         return meal;
         

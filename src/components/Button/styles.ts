@@ -1,7 +1,7 @@
 import styled, { css } from "styled-components/native";
 import { TouchableOpacity } from "react-native";
 
-export type ButtonTypeStyleProps = 'PRIMARY' | 'ADD' | 'EDIT' | 'DEL';
+export type ButtonTypeStyleProps = 'PRIMARY' | 'SECONDARY' | 'ADD' | 'EDIT' | 'DEL';
 
 type Props = {
     type: ButtonTypeStyleProps;
@@ -23,14 +23,14 @@ export const Container = styled(TouchableOpacity) <Props>`
 
     align-items: center;
 
-    background-color: ${({ theme, type }) => type === 'PRIMARY' || type === 'ADD' ? theme.COLORS.GRAY_200 : theme.COLORS.GRAY_700};
+    background-color: ${({ theme, type }) => type === 'PRIMARY' || type === 'ADD' || type === 'EDIT' ? theme.COLORS.GRAY_200 : theme.COLORS.GRAY_700};
 
     margin-top: 8px;
 `;
 
 export const ButtonText = styled.Text<Props>`
     ${({ theme, type }) => css`
-        color: ${type === 'PRIMARY' || type === 'ADD' ? theme.COLORS.WHITE : theme.COLORS.GRAY_200};
+        color: ${ type === 'PRIMARY' || type === 'ADD' || type === 'EDIT' ? theme.COLORS.WHITE : theme.COLORS.GRAY_200 };
         font-size: ${theme.FONT_SIZE.MD}px;
         font-family: ${theme.FONT_FAMILY.BOLD};
     `};

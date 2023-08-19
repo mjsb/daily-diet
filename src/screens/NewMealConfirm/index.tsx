@@ -5,11 +5,28 @@ import confirmIN from "@assets/confirmIN.png";
 import confirmOUT from "@assets/confirmOUT.png";
 import { Text } from "react-native";
 
+import { useNavigation, useRoute } from "@react-navigation/native";
+
 type Props = {
     type?: NewMealStyleProps;
 }
 
-export function NewMealConfirm({type = 'IN'}: Props) {
+type RouteParams = {
+    status: NewMealStyleProps;
+}
+
+export function NewMealConfirm({ type = 'IN' }: Props) {
+
+    const navigation = useNavigation();
+    const route = useRoute();  
+    const { status } = route.params as RouteParams;
+
+    type = status;
+
+    function handleButton() {
+        navigation.navigate('meals');
+    }
+
     return (
         <Container>
             <Title
@@ -41,9 +58,9 @@ export function NewMealConfirm({type = 'IN'}: Props) {
             />
             <BoxButton>
                 <Button 
-                    type="IN"
+                    type="PRIMARY"
                     title="Ir para a página inicial"
-                    onPress={() => {}}
+                    onPress={handleButton}
                 />
             </BoxButton>
         </Container>

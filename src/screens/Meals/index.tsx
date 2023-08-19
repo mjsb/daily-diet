@@ -23,11 +23,7 @@ export function Meals() {
 	const meals_out = [];
 
 	let res: string;
-	let typ: string;
-
-	function handleNewMeal() {
-		navigation.navigate('new');
-	}
+	let typ: string;	
 
 	async function fetchMeals() {
 
@@ -40,7 +36,7 @@ export function Meals() {
 			meals_out.length = 0;
 
 			const foods = await mealGetAll();
-			// console.log(foods);
+			
 			const meal = foods.reduce((acc: any, food) => {
 				if (!acc[food.date]) {
 					acc[food.date] = [];
@@ -48,8 +44,6 @@ export function Meals() {
 				acc[food.date].push(food);
 				return acc;
 			}, {});
-
-			// console.log(meal);	
 
 			foods.forEach(element => {
 
@@ -101,6 +95,14 @@ export function Meals() {
 		
 	}
 
+	function handleNewMeal() {
+		navigation.navigate('new', { meal: '0' });
+	}
+	
+	function handleDetailMeal(meal: string) {
+		navigation.navigate('detail', { meal: meal });
+	}
+
 	useFocusEffect(useCallback(() => {		
 		fetchMeals();
 	}, []));
@@ -139,6 +141,7 @@ export function Meals() {
 									hora={item.hour}
 									meal={item.name}
 									type={item.status === '2' ? 'OUT' : 'IN'}
+									onPress={() => handleDetailMeal(item.id)}
 								/>	
 
 							)}
@@ -152,7 +155,6 @@ export function Meals() {
 
 			>
 			</FlatList>  
-		</Container>
-		
+		</Container>		
 	);
 }

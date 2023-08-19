@@ -3,10 +3,10 @@ import { useNavigation } from "@react-navigation/native";
 
 type Props = {
     type?: HeaderMealsStyleProps;
-    title?: string;
-}
+    mode?: 'ADD' | 'EDIT' | 'VIEW';
+} 
 
-export function HeaderMeals({type = 'ADD', title}: Props) {
+export function HeaderMeals({ type = 'PRIMARY', mode }: Props) {
     const navigation = useNavigation();
 
     function handleGoBack() {
@@ -23,7 +23,7 @@ export function HeaderMeals({type = 'ADD', title}: Props) {
                 <BackIcon />
             </BackButton>
             <Content>
-                <Title>{type === 'ADD' ? 'Nova refeição' : type === 'EDIT' ? 'Editar refeição' : 'Refeição'}</Title>
+                <Title>{mode === 'ADD' ? 'Nova refeição' : mode === 'EDIT' ? 'Editar refeição' : 'Refeição'}</Title>
             </Content>
         </Container>
     )

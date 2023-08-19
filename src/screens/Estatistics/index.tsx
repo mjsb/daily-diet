@@ -4,10 +4,6 @@ import { HeaderEstatistic } from "@components/HeaderEstatistics";
 import { BoxFull, BoxMid, BoxMidContainer, Container, Content, EstatisticStyleProps, SubTitleBox, Title, TitleBox } from "./styles";
 import { useFocusEffect } from "@react-navigation/native";
 
-// type Props = {
-//     type: EstatisticStyleProps;
-// }
-
 export function Estatistics() {
 
     const [percent, setPercent] = useState<any>(0);
@@ -66,8 +62,8 @@ export function Estatistics() {
 			}	
             
             setBestSequence(best_sequence_in);
-            setTotalMealsIn(total_foods_in);
             setTotalMealsOut(total_foods_out);
+            setTotalMealsIn(total_foods_in);
             setTotalMeals(total_foods);
             setPercent(res);
 			setType(typ);

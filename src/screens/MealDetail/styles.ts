@@ -1,14 +1,19 @@
 import styled, { css } from "styled-components/native";
 import { MaterialIcons } from "@expo/vector-icons";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export type MealDetailStyleProps = 'PRIMARY' | 'IN' | 'OUT';
 
 type Props = {
-    type: MealDetailStyleProps;
+    type?: MealDetailStyleProps;
 }
 
-export const Container = styled.View`
+export const Container = styled(SafeAreaView)<Props>`
+
     flex: 1;
+
+    background-color: ${({ theme, type }) => type === 'PRIMARY' ? theme.COLORS.GRAY_500 : type === 'IN' ? theme.COLORS.GREEN_LIGHT : theme.COLORS.RED_LIGHT};
+    /* flex: 1;
 
     align-items: flex-start;
     justify-content: flex-start;
@@ -17,7 +22,26 @@ export const Container = styled.View`
     border-top-left-radius: 20px;
     border-top-right-radius: 20px;
 
+    background-color: ${({ theme }) => theme.COLORS.GRAY_700}; */
+`;
+
+export const Content = styled.View`
+
+    /* width: 100%;
+    height: auto; */
+
+    flex: 1;
+
+    align-items: flex-start;
+    justify-content: flex-start;
+
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+
     background-color: ${({ theme }) => theme.COLORS.GRAY_700};
+
+    padding: 24px;
+    
 `;
 
 export const Title = styled.Text`

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { Alert, Platform, StyleSheet } from "react-native";
 
 import { Button } from "@components/Button";
@@ -12,15 +12,17 @@ import theme from "@theme/index";
 import { AppError } from "@utils/appError";
 import { mealCreate } from "@storage/Meal/mealCreate";
 
-import { useNavigation } from "@react-navigation/native";
+import { useFocusEffect, useNavigation, useRoute } from "@react-navigation/native";
 
 import uuid from 'react-native-uuid';
+import { mealGetAll } from "@storage/Meal/mealGetAll";
 
-type Props = {
-    type: NewMealsStyleProps;
+type RouteParams = {
+    meal: string;
 }
 
-export function NewMeal({ type = 'PRIMARY'}: Props) {
+export function NewMeal() {
+
     const [date, setDate] = useState(new Date());
     const [mode, setMode] = useState();
     const [show, setShow] = useState(false);
@@ -31,10 +33,25 @@ export function NewMeal({ type = 'PRIMARY'}: Props) {
     const [textHora, setTextHora] = useState('');
     const [btnStatus, setBtnStatus] = useState('');
 
-    const navigation = useNavigation();
+    const [typeFood, setTypeFood] = useState<NewMealsStyleProps>('PRIMARY');
 
-    const onChange = (event: any, selectedDate: any) => {
+    const navigation = useNavigation();
+    const route = useRoute();
+
+    const { meal } = route.params as RouteParams;
+
+    if ( meal !== '0' ) {
+        
+        useFocusEffect(useCallback(() => {		
+            fetchMeal();
+        }, []));
+
+    } 
+
+    const onChangeDatePicker = (event: any, selectedDate: any) => {
+
         const currentDate = selectedDate || date;
+
         setShow(Platform.OS === 'ios');
         setDate(currentDate);
 
@@ -44,13 +61,14 @@ export function NewMeal({ type = 'PRIMARY'}: Props) {
 
         setTextDate(fDate);
         setTextHora(fTime);
+
     }
 
     const showMode = (currentMode: any) => {
         setShow(true);
         setMode(currentMode);
     }
-
+    
     function buttonSelected(id: string) {
         setBtnStatus(id);
     }
@@ -61,6 +79,28 @@ export function NewMeal({ type = 'PRIMARY'}: Props) {
 
     function handleDescriptionChange(description: string) {
         setDescription(description);
+    }
+
+    async function fetchMeal() {
+        
+        try {
+
+            const stored = await mealGetAll();
+            const food = stored.filter(item => item.id === meal);
+            
+            const type = food[0].status === '1' ? 'IN' : 'OUT';
+            
+            setTypeFood(type);
+            setName(food[0].name);
+            setDescription(food[0].description);
+            setTextDate(food[0].date);
+            setTextHora(food[0].hour);                
+            
+        } catch (error) {
+
+            throw error;
+            
+        }
     }
     
     async function handleNewMeal() {
@@ -103,7 +143,7 @@ export function NewMeal({ type = 'PRIMARY'}: Props) {
             };
 
             await mealCreate(formData); 
-            navigation.navigate('meals');        
+            navigation.navigate('confirm', {status: btnStatus === '1' ? 'IN' : 'OUT'});        
             
         } catch (error) {
 
@@ -120,18 +160,22 @@ export function NewMeal({ type = 'PRIMARY'}: Props) {
     
     return (
         <Container
-            type={type}
+            type={typeFood}
         >
-            <HeaderMeals />
+            <HeaderMeals
+                mode="ADD"
+            />
             <Content>
                 <MealLabel>Nome</MealLabel>
                 <MealInput 
                     onChangeText={handleNameChange}
+                    value={name}
                 />
                 <MealLabel>Descrição</MealLabel>
                 <MealTextArea 
                     multiline={true}
                     onChangeText={handleDescriptionChange}
+                    value={description}
                 />
                 <MealBoxFields>
                     <MealBoxField>
@@ -159,7 +203,7 @@ export function NewMeal({ type = 'PRIMARY'}: Props) {
                         mode={mode}
                         is24Hour={true}
                         display='default'
-                        onChange={onChange}
+                        onChange={onChangeDatePicker}
                     />                
                 )}
 

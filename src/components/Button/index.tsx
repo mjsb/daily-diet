@@ -17,8 +17,8 @@ export function Button ({ title, type = 'PRIMARY', onPress }: Props) {
         >
             {type !== 'PRIMARY' && (
                 <AntDesign 
-                    color={type === 'ADD' || type === 'EDIT' ? theme.COLORS.WHITE : theme.COLORS.GRAY_200}
-                    name={type === 'EDIT' ? 'edit' : type === 'DEL' ? 'delete' : type === 'ADD' ? 'plus' : 'minus'}
+                    color={ type === 'ADD' || type === 'EDIT' ? theme.COLORS.WHITE : theme.COLORS.GRAY_200 }
+                    name={ type === 'EDIT' ? 'edit' : type === 'DEL' ? 'delete' : type === 'ADD' ? 'plus' : 'minus' }
                     size={20}
                 />          
             )}

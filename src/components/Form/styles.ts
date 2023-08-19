@@ -1,22 +1,7 @@
 import styled, { css } from "styled-components/native";
 import { MaterialIcons } from "@expo/vector-icons";
-import { SafeAreaView } from "react-native-safe-area-context";
 
-export type NewMealsStyleProps =  'PRIMARY' | 'IN' | 'OUT';
-
-type Props = {
-    type?: NewMealsStyleProps;
-}
-
-export const Container = styled(SafeAreaView)<Props>`
-
-    flex: 1;
-
-    background-color: ${({ theme, type }) => type === 'PRIMARY' ? theme.COLORS.GRAY_500 : type === 'IN' ? theme.COLORS.GREEN_LIGHT : theme.COLORS.RED_LIGHT};
-    
-`;
-
-export const Content = styled.View`
+export const Container = styled.View`
 
     width: 100%;
     height: auto;
@@ -163,3 +148,4 @@ export const MealFooter = styled.View`
     background-color: ${({ theme }) => theme.COLORS.GRAY_700};
 
 `;
+
