@@ -1,3 +1,3 @@
-const MEAL_COLLECTION = '@daily-diet:meals';
+const FOODS_COLLECTION = '@daily-diet:foods';
 
-export { MEAL_COLLECTION };
+export { FOODS_COLLECTION };

@@ -13,7 +13,7 @@ export const Container = styled.View <Props>`
     
     padding: 24px;
 
-    background-color: ${({ theme }) => theme.COLORS.GREEN_LIGHT};
+    background-color: ${({ theme, type }) => type === 'IN' ? theme.COLORS.GREEN_LIGHT : theme.COLORS.RED_LIGHT};
 
 `;
 

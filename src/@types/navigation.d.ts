@@ -7,12 +7,13 @@ export declare global {
             };
             edit: {
                 meal: string;
-                type: string;
             };
             detail: {
                 meal: string;
             };
-            estatistics: undefined;
+            estatistics: {
+                type: string;
+            };
             confirm: {
                 status: string;
             } 

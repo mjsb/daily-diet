@@ -3,7 +3,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Estatistics } from '@screens/Estatistics';
 import { Meals } from '@screens/Meals';
 import { MealDetail } from '@screens/MealDetail';
-import { NewMeal } from '@screens/NewMeal';
+import { CreateUpdateMeal } from '@screens/CreateUpdateMeal';
 import { NewMealConfirm } from '@screens/NewMealConfirm';
 
 const { Navigator, Screen } = createNativeStackNavigator();
@@ -25,11 +25,11 @@ export function AppRoutes() {
             />
             <Screen 
                 name="new"
-                component={NewMeal}
+                component={CreateUpdateMeal}
             />
             <Screen 
                 name="edit"
-                component={NewMeal}
+                component={CreateUpdateMeal}
             />
             <Screen 
                 name="confirm"

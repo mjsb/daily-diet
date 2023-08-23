@@ -16,37 +16,51 @@ import { useFocusEffect, useNavigation, useRoute } from "@react-navigation/nativ
 
 import uuid from 'react-native-uuid';
 import { mealGetAll } from "@storage/Meal/mealGetAll";
+import { MealStorageDTO } from "@storage/Meal/MealStorageDTO";
+import { HeaderMealsTitleProps } from "@components/HeaderMeals/styles";
+import { mealUpdate } from "@storage/Meal/mealUpdate";
 
 type RouteParams = {
     meal: string;
 }
 
-export function NewMeal() {
+export function CreateUpdateMeal() {
 
     const [date, setDate] = useState(new Date());
     const [mode, setMode] = useState();
     const [show, setShow] = useState(false);
     
-    const [name, setName] = useState('');
-    const [description, setDescription] = useState('');
+    const [textID, setTextID] = useState<any>('');
+    const [textName, setTextName] = useState('');
+    const [textDesc, setTextDesc] = useState('');
     const [textDate, setTextDate] = useState('');
     const [textHora, setTextHora] = useState('');
     const [btnStatus, setBtnStatus] = useState('');
 
-    const [typeFood, setTypeFood] = useState<NewMealsStyleProps>('PRIMARY');
+    //const [typeFood, setTypeFood] = useState<NewMealsStyleProps>('PRIMARY');
 
     const navigation = useNavigation();
     const route = useRoute();
 
     const { meal } = route.params as RouteParams;
 
+    let msn = '';
+    let viewTitle: HeaderMealsTitleProps;
+    let formData: MealStorageDTO;
+
     if ( meal !== '0' ) {
+
+        viewTitle = 'EDIT';
         
         useFocusEffect(useCallback(() => {		
             fetchMeal();
         }, []));
 
-    } 
+    } else {
+
+        viewTitle = 'ADD';
+
+    }
 
     const onChangeDatePicker = (event: any, selectedDate: any) => {
 
@@ -74,11 +88,11 @@ export function NewMeal() {
     }
 
     function handleNameChange(name: string) {
-        setName(name);
+        setTextName(name);
     }
 
     function handleDescriptionChange(description: string) {
-        setDescription(description);
+        setTextDesc(description);
     }
 
     async function fetchMeal() {
@@ -88,13 +102,13 @@ export function NewMeal() {
             const stored = await mealGetAll();
             const food = stored.filter(item => item.id === meal);
             
-            const type = food[0].status === '1' ? 'IN' : 'OUT';
-            
-            setTypeFood(type);
-            setName(food[0].name);
-            setDescription(food[0].description);
+            setTextID(food[0].id);
+            setTextName(food[0].name);
+            setTextDesc(food[0].description);
             setTextDate(food[0].date);
             setTextHora(food[0].hour);                
+
+            food[0].status === '1' ? buttonSelected('1') : buttonSelected('2');
             
         } catch (error) {
 
@@ -104,27 +118,30 @@ export function NewMeal() {
     }
     
     async function handleNewMeal() {
+
         try {
 
-            let msn = '';
-
-            if(name.trim().length === 0) {
+            if (textName.trim().length === 0) {
                 msn = 'Informe um nome!\n';
             }
 
-            if(textDate.trim().length === 0) {
+            if (textDesc.trim().length === 0) {
+                msn += 'Informe uma descrição!\n';
+            }
+
+            if (textDate.trim().length === 0) {
                 msn += 'Informe uma data!\n';
             }
 
-            if(textHora.trim().length === 0) {
+            if (textHora.trim().length === 0) {
                 msn += 'Informe um horário!\n';
             }
 
-            if(btnStatus.trim().length === 0) {
-                msn += 'Informe se a refeição está ou não dentro da dieta!';
+            if (btnStatus.trim().length === 0) {
+                msn += 'Dentro ou fora da dieta?';
             }
 
-            if(msn.trim().length !== 0) {
+            if (msn.trim().length !== 0) {
                 return Alert.alert('Atenção!', msn);
             }
 
@@ -132,18 +149,29 @@ export function NewMeal() {
             const splitHour = textHora.split(':'); 
 
             const formData = {                
-                id: uuid.v4(),
-                sort_date: new Date(splitDate[2] + '-' + splitDate[1] + '-' + splitDate[0]).getTime().toString(),
-                sort_hour: new Date(Number(splitDate[2]), Number(splitDate[1]), Number(splitDate[0]), Number(splitHour[0]), Number(splitHour[1])).getTime().toString(),
+                id: textID,
+                name: textName,
+                description: textDesc,
                 date: textDate,
                 hour: textHora,
-                name: name,
-                description: description,
-                status: btnStatus                
+                status: btnStatus,              
+                sort_date: new Date(splitDate[2] + '-' + splitDate[1] + '-' + splitDate[0]).getTime().toString(),
+                sort_hour: new Date(Number(splitDate[2]), Number(splitDate[1]), Number(splitDate[0]), Number(splitHour[0]), Number(splitHour[1])).getTime().toString(),
             };
 
-            await mealCreate(formData); 
-            navigation.navigate('confirm', {status: btnStatus === '1' ? 'IN' : 'OUT'});        
+            if ( meal !== '0' ) {
+
+                await mealUpdate(formData);
+                navigation.navigate('detail', { meal });
+
+            } else {
+
+                setTextID(uuid.v4());
+                console.log(textID);
+                await mealCreate(formData); 
+                navigation.navigate('confirm', {status: btnStatus === '1' ? 'IN' : 'OUT'});        
+
+            }
             
         } catch (error) {
 
@@ -160,22 +188,22 @@ export function NewMeal() {
     
     return (
         <Container
-            type={typeFood}
+            type="PRIMARY"
         >
             <HeaderMeals
-                mode="ADD"
+                mode={viewTitle}
             />
             <Content>
                 <MealLabel>Nome</MealLabel>
                 <MealInput 
                     onChangeText={handleNameChange}
-                    value={name}
+                    value={textName}
                 />
                 <MealLabel>Descrição</MealLabel>
                 <MealTextArea 
                     multiline={true}
                     onChangeText={handleDescriptionChange}
-                    value={description}
+                    value={textDesc}
                 />
                 <MealBoxFields>
                     <MealBoxField>
@@ -236,7 +264,7 @@ export function NewMeal() {
                 </MealBoxFields>
                 <MealFooter>
                     <Button 
-                        title="Cadastrar refeição"
+                        title={ viewTitle === 'ADD' ? 'Cadastrar refeição' : 'Salvar alterações' }
                         onPress={handleNewMeal}
                     />
                 </MealFooter>      

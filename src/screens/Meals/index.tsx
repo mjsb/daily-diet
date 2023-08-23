@@ -10,12 +10,13 @@ import { PercentCard } from '@components/PercentCard';
 import { Container, DateList, Title } from './styles';
 
 import { mealGetAll } from '@storage/Meal/mealGetAll';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export function Meals() {
+
 	const [meals, setMeals] = useState<any[]>([]);
 	const [percent, setPercent] = useState<any>(0);
 	const [type, setType] = useState<any>('');
+	const [totalFoods, setTotalFoods] = useState(0);
 
 	const navigation = useNavigation();
 
@@ -36,6 +37,8 @@ export function Meals() {
 			meals_out.length = 0;
 
 			const foods = await mealGetAll();
+
+			setTotalFoods(foods.length);
 			
 			const meal = foods.reduce((acc: any, food) => {
 				if (!acc[food.date]) {
@@ -83,7 +86,7 @@ export function Meals() {
 			});
 			
 			setMeals(sectionListData);
-			// console.log(meals);
+			console.log(meals);
 			// AsyncStorage.clear();
 			// setMeals([]);
 
@@ -110,7 +113,7 @@ export function Meals() {
 	return (
 		<Container>
 			<Header />
-			{ percent !== '0' &&
+			{ totalFoods > 0 &&
 				<PercentCard
 					type={type}
 					title={percent}
