@@ -2,9 +2,11 @@ import styled, { css } from "styled-components/native";
 import { MaterialIcons } from "@expo/vector-icons";
 
 export type HeaderMealsStyleProps = 'IN' | 'OUT' | 'PRIMARY';
+export type HeaderMealsTitleProps = 'ADD' | 'EDIT' | 'VIEW';
 
 type Props = {
     type: HeaderMealsStyleProps;
+    mode: HeaderMealsTitleProps;
 }
 
 export const Container = styled.View <Props>`

@@ -11,6 +11,7 @@ import theme from "@theme/index";
 import { Container, Content, Title, SubTitle, BulletDetail, StatusDetail, FooterDetail, MealDetailStyleProps, Texto, TextoStatusDetail } from "./styles";
 
 import { mealGetAll } from "@storage/Meal/mealGetAll";
+import { mealDelete } from "@storage/Meal/mealDelete";
 
 type RouteParams = {
     meal: string;
@@ -23,7 +24,7 @@ export function MealDetail() {
     const [descFood, setDescFood] = useState<string>();
     const [dateFood, setDateFood] = useState<string>();
     const [hourFood, setHourFood] = useState<string>();
-    const [typeFood, setTypeFood] = useState<MealDetailStyleProps>('PRIMARY');
+    const [type, setType] = useState<MealDetailStyleProps>('PRIMARY');
 
     const navigation = useNavigation();
 
@@ -37,9 +38,9 @@ export function MealDetail() {
             const stored = await mealGetAll();
             const food = stored.filter(item => item.id === meal);
             
-            const type = food[0].status === '1' ? 'IN' : 'OUT';
+            const typeFood = food[0].status === '1' ? 'IN' : 'OUT';
             
-            setTypeFood(type);
+            setType(typeFood);
             setNameFood(food[0].name);
             setDescFood(food[0].description);
             setDateFood(food[0].date);
@@ -54,7 +55,7 @@ export function MealDetail() {
     }
 
     function handleEditMeal() {
-        navigation.navigate('edit', { meal: meal, type: typeFood });
+        navigation.navigate('edit', { meal: meal });
     }
     
     function handleDeleteMeal() {
@@ -65,16 +66,31 @@ export function MealDetail() {
         Alert.alert('Atenção!','OK');        
     }
 
+    async function deleteMeal(meal: string | number[]) {
+
+        try {
+            
+            await mealDelete(meal);
+            navigation.navigate('meals');
+
+        } catch (error) {
+
+            throw error;
+            
+        }
+
+    }
+
     useFocusEffect(useCallback(() => {		
 		fetchMeal();
 	}, []));
 
     return (
         <Container
-            type={typeFood}
+            type={type}
         >
             <HeaderMeals 
-                type={typeFood}
+                type={type}
                 mode="VIEW"
             />
             <Content>
@@ -84,10 +100,10 @@ export function MealDetail() {
                 <Texto>{dateFood} às {hourFood}</Texto>
                 <StatusDetail>
                     <BulletDetail
-                        color={typeFood === 'IN' ? theme.COLORS.GREEN_DARK : theme.COLORS.RED_DARK}
+                        color={type === 'IN' ? theme.COLORS.GREEN_DARK : theme.COLORS.RED_DARK}
                     />
                     <TextoStatusDetail>
-                        {typeFood === 'IN' ? 'dentro da dieta' : 'fora da dieta'}
+                        {type === 'IN' ? 'dentro da dieta' : 'fora da dieta'}
                     </TextoStatusDetail>
                 </StatusDetail>
             </Content>
@@ -126,7 +142,7 @@ export function MealDetail() {
                 cancelText="Cancelar"
                 confirmText="Sim, excluir"
                 onCancelPressed={() => setShowAlert(false)}
-                onConfirmPressed={() => setShowAlert(false)}
+                onConfirmPressed={() => deleteMeal(meal)}
                 contentContainerStyle={styles.container}
                 titleStyle={styles.title}
                 cancelButtonStyle={styles.cancel}

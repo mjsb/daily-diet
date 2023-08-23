@@ -1,5 +1,5 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { MEAL_COLLECTION } from "@storage/storageConfig";
+import { FOODS_COLLECTION } from "@storage/storageConfig";
 import { mealGetAll } from "./mealGetAll";
 import { MealStorageDTO } from "./MealStorageDTO";
 import { AppError } from "@utils/appError";
@@ -30,7 +30,7 @@ export async function mealCreate(newMeal: MealStorageDTO) {
         
         // const storage = JSON.stringify([...storedMeals, newMeal]);
         const storage = JSON.stringify(sortDate);
-        await AsyncStorage.setItem(`${MEAL_COLLECTION}`, storage); 
+        await AsyncStorage.setItem(FOODS_COLLECTION, storage); 
 
     } catch (error) {
 
