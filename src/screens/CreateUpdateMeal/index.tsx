@@ -6,7 +6,7 @@ import { HeaderMeals } from "@components/HeaderMeals";
 
 import DateTimePicker from "@react-native-community/datetimepicker";
 
-import { Container, Content, MealBoxFields, MealLabel, MealInput, MealTextArea, MealBoxField, MealInputDateTime, MealButton, MealBullet, MealFooter, NewMealsStyleProps } from "./styles";
+import { Container, Content, MealBoxFields, MealLabel, MealInput, MealTextArea, MealBoxField, MealInputDateTime, MealButton, MealBullet, MealFooter } from "./styles";
 
 import theme from "@theme/index";
 import { AppError } from "@utils/appError";
@@ -16,7 +16,6 @@ import { useFocusEffect, useNavigation, useRoute } from "@react-navigation/nativ
 
 import uuid from 'react-native-uuid';
 import { mealGetAll } from "@storage/Meal/mealGetAll";
-import { MealStorageDTO } from "@storage/Meal/MealStorageDTO";
 import { HeaderMealsTitleProps } from "@components/HeaderMeals/styles";
 import { mealUpdate } from "@storage/Meal/mealUpdate";
 
@@ -30,14 +29,12 @@ export function CreateUpdateMeal() {
     const [mode, setMode] = useState();
     const [show, setShow] = useState(false);
     
-    const [textID, setTextID] = useState<any>('');
+    const [textID, setTextID] = useState<string | number[]>([]);
     const [textName, setTextName] = useState('');
     const [textDesc, setTextDesc] = useState('');
     const [textDate, setTextDate] = useState('');
     const [textHora, setTextHora] = useState('');
     const [btnStatus, setBtnStatus] = useState('');
-
-    //const [typeFood, setTypeFood] = useState<NewMealsStyleProps>('PRIMARY');
 
     const navigation = useNavigation();
     const route = useRoute();
@@ -46,7 +43,6 @@ export function CreateUpdateMeal() {
 
     let msn = '';
     let viewTitle: HeaderMealsTitleProps;
-    let formData: MealStorageDTO;
 
     if ( meal !== '0' ) {
 
@@ -59,6 +55,10 @@ export function CreateUpdateMeal() {
     } else {
 
         viewTitle = 'ADD';
+        
+        useFocusEffect(useCallback(() => {
+            setTextID(uuid.v4());
+        }, []));
 
     }
 
@@ -102,7 +102,7 @@ export function CreateUpdateMeal() {
             const stored = await mealGetAll();
             const food = stored.filter(item => item.id === meal);
             
-            setTextID(food[0].id);
+            setTextID(food[0].id);            
             setTextName(food[0].name);
             setTextDesc(food[0].description);
             setTextDate(food[0].date);
@@ -159,15 +159,13 @@ export function CreateUpdateMeal() {
                 sort_hour: new Date(Number(splitDate[2]), Number(splitDate[1]), Number(splitDate[0]), Number(splitHour[0]), Number(splitHour[1])).getTime().toString(),
             };
 
-            if ( meal !== '0' ) {
+            if ( viewTitle === 'EDIT' ) {
 
                 await mealUpdate(formData);
                 navigation.navigate('detail', { meal });
 
             } else {
 
-                setTextID(uuid.v4());
-                console.log(textID);
                 await mealCreate(formData); 
                 navigation.navigate('confirm', {status: btnStatus === '1' ? 'IN' : 'OUT'});        
 
@@ -176,10 +174,14 @@ export function CreateUpdateMeal() {
         } catch (error) {
 
             if(error instanceof AppError) {
+
                 Alert.alert('Nova refeição', error.message);
+
             } else {
+
                 Alert.alert('Nova refeição', 'Não foi possível cadastrar essa refeição!');
                 console.log(error);
+                
             }
             
         }

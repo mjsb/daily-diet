@@ -6,11 +6,15 @@ import { MealStorageDTO } from "./MealStorageDTO";
 export async function mealUpdate(editedMeal: MealStorageDTO) {
 
     function compareDate(a: any, b: any) {
+        
         return b.sort_date - a.sort_date;
+        
     }
     
     function compareHour(a: any, b: any) {
+        
         return a.sort_hour - b.sort_hour;
+        
     }
 
     try {
@@ -26,16 +30,13 @@ export async function mealUpdate(editedMeal: MealStorageDTO) {
             const sortHour = allMeals.sort(compareHour);
             const sortDate = sortHour.sort(compareDate);
             
-            // const storage = JSON.stringify([...storedMeals, editedMeal]);
-            //const storage = JSON.stringify(sortDate);
             await AsyncStorage.setItem(FOODS_COLLECTION, JSON.stringify(sortDate)); 
 
         } else if ( storedMeals.length === 1 ) {
 
             await AsyncStorage.setItem(FOODS_COLLECTION, JSON.stringify([editedMeal])); 
 
-        }
-        
+        }        
 
     } catch (error) {
 

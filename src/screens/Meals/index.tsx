@@ -10,6 +10,7 @@ import { PercentCard } from '@components/PercentCard';
 import { Container, DateList, Title } from './styles';
 
 import { mealGetAll } from '@storage/Meal/mealGetAll';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export function Meals() {
 
@@ -59,7 +60,6 @@ export function Meals() {
 			});
 
 			const percent_in = meals_in.length / foods.length * 100;
-			// const percent_out = meals_out.length / foods.length * 100;
 
 			if ( percent_in >= 60 ) {
 
@@ -86,7 +86,7 @@ export function Meals() {
 			});
 			
 			setMeals(sectionListData);
-			console.log(meals);
+			// console.log(meals);
 			// AsyncStorage.clear();
 			// setMeals([]);
 
